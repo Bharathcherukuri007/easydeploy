@@ -25,6 +25,7 @@ jobs:
         NETLIFY_DEPLOY_TO_PROD: true,
         NETLIFY_SITE_ID: c7c11cd0-a011-4a7b-a083-2e06c656376d
         BUILD_COMMAND: flutter build web
+        INSTALL_COMMAND: flutter
     
   
 
