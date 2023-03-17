@@ -21,7 +21,7 @@ jobs:
     - name: Deploy to Netlify
       uses: jsmrcaga/action-netlify-deploy@v2.0.0
       with:
-        NETLIFY_AUTH_TOKEN: kfvXbvhcR39SUQMS3yRY8fazoe0J6Mn4aQzFhEQtdus
+        NETLIFY_AUTH_TOKEN: WA2Ik4YjneZhAgOAYehgVQMXCAGmLoQTscR2L3CgpI4
         NETLIFY_DEPLOY_TO_PROD: false
         NETLIFY_SITE_ID: c7c11cd0-a011-4a7b-a083-2e06c656376d
         BUILD_COMMAND: flutter build -v web --release 
