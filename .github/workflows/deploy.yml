@@ -15,7 +15,6 @@ jobs:
       uses: subosito/flutter-action@v1.5.3
       with:
         flutter-version: '3.3.9'
-    - run: flutter doctor -v
     - run: flutter pub get
     - run: flutter build -v web --release
     - name: Deploy to Netlify
@@ -24,8 +23,8 @@ jobs:
         NETLIFY_AUTH_TOKEN: WA2Ik4YjneZhAgOAYehgVQMXCAGmLoQTscR2L3CgpI4
         NETLIFY_DEPLOY_TO_PROD: false
         NETLIFY_SITE_ID: c7c11cd0-a011-4a7b-a083-2e06c656376d
-        BUILD_COMMAND: flutter build -v web --release 
-        INSTALL_COMMAND: flutter pub get
+        BUILD_COMMAND: "echo hello123" 
+        INSTALL_COMMAND: "echo hello"
         BUILD_DIRECTORY: 'build/web'
     
   
