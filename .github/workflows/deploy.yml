@@ -1,0 +1,33 @@
+
+name: Deploy Business app web release
+on:
+  push:
+    branches: [master]
+    
+
+jobs:
+
+  build-staging:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: .
+    steps:
+    - uses: actions/checkout@v2
+    - name: Clone Flutter repository with stable channel
+      uses: subosito/flutter-action@v1.5.3
+      with:
+        flutter-version: '3.3.9'
+    - run: flutter pub get
+    - run: flutter build -v web --release
+    - name: Deploy to Netlify
+      uses: jsmrcaga/action-netlify-deploy@v2.0.0
+      with:
+        NETLIFY_AUTH_TOKEN: WA2Ik4YjneZhAgOAYehgVQMXCAGmLoQTscR2L3CgpI4
+        NETLIFY_DEPLOY_TO_PROD: true
+        NETLIFY_SITE_ID: abfa97a8-bfbe-4049-ac67-f6f7a9f4df29
+        BUILD_COMMAND: "echo hello123" 
+        INSTALL_COMMAND: "echo hello"
+        BUILD_DIRECTORY: '/build/web'
+  
+
