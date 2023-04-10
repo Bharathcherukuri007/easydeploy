@@ -19,22 +19,8 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return  SignIn(code: state.queryParams["code"] ?? "",);
+        return  Home(code: state.queryParams["code"] ?? "",);
       },
-      routes: <RouteBase>[
-        GoRoute(
-          path: '/details',
-          builder: (BuildContext context, GoRouterState state) {
-            return const MyHomePage(title: "text",);
-          },
-        ),
-        GoRoute(
-          path: '/home',
-          builder: (BuildContext context, GoRouterState state) {
-            return Home(code: state.queryParams["code"] ?? "",);
-          },
-        ),
-      ],
     ),
   ],
 );
