@@ -31,7 +31,7 @@ class _SignInState extends State<SignIn> {
   void initState() {
     super.initState();
     code = widget.code;
-   String  backEnd = "https://localhost:3000/home";
+   String  backEnd = "https://easydeployprod.netlify.app/#/home";
     url = "http://github.com/login/oauth/authorize?client_id=fa23522ab6b034935c9b&redirection_url=${backEnd}&scope=workflow,repo,email";
     Future.delayed(Duration.zero, (){
       if(widget.code.isNotEmpty){

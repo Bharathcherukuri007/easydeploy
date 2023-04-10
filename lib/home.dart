@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
    
-   String  backEnd = "http://localhost:3000/home";
+   String  backEnd = "https://easydeployprod.netlify.app/#/home";
     url = "http://github.com/login/oauth/authorize?client_id=fa23522ab6b034935c9b&redirection_url=${backEnd}&scope=workflow,repo,user:email";
     Future.delayed(Duration.zero, () async{
        prefs = await SharedPreferences.getInstance();
