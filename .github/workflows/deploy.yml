@@ -2,7 +2,7 @@
 name: Flutter
 on:
   push:
-    branches: [init1]
+    branches: [master]
     
 
 jobs:
