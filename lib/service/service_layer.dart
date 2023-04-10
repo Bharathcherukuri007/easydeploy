@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class ServiceLayer{
-  String url = "http://localhost:3001";
+  String url = "https://backend-42m54a5jz-bharathcherukuri007.vercel.app/";
   SharedPreferences? prefs;
 
   Future<Map<String, String>>? headers() async{
