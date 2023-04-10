@@ -1,3 +1,5 @@
+import 'package:easydeploy/home.dart';
+import 'package:easydeploy/providers/github_bloc.dart';
 import 'package:easydeploy/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +8,40 @@ import 'package:flutter/material.dart';
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:url_strategy/url_strategy.dart';
+
+
+
+final GoRouter _router = GoRouter(
+  routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return  SignIn(code: state.queryParams["code"] ?? "",);
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'details',
+          builder: (BuildContext context, GoRouterState state) {
+            return const MyHomePage(title: "text",);
+          },
+        ),
+        GoRoute(
+          path: 'home',
+          builder: (BuildContext context, GoRouterState state) {
+            return Home(code: state.queryParams["code"] ?? "",);
+          },
+        ),
+      ],
+    ),
+  ],
+);
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  FirebaseApp app = await Firebase.initializeApp(options: const FirebaseOptions(apiKey: "AIzaSyAQ_4MIPKmPZNIamkOoPBX3COkk__pgSRQ", appId: "1:349901760280:web:b55cfd13de211a760f206d", messagingSenderId: "349901760280", projectId: "fir-5ef84", authDomain: "auth.fir-5ef84.firebaseapp.com"));
-  FirebaseAuth auth = FirebaseAuth.instanceFor(app: app);
+  setPathUrlStrategy();
   runApp(const MyApp());
 }
 
@@ -20,21 +51,33 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        Provider.value(value: GithubBloc())
+      ],
+      child: MaterialApp.router(
+        routerConfig: _router,
+        title: 'Flutter Demo',
+        darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        elevatedButtonTheme: ElevatedButtonThemeData(style:  ElevatedButton.styleFrom(backgroundColor: Colors.green)),
       ),
-      home: SignIn(),
+      themeMode: ThemeMode.dark,
+        theme: ThemeData(
+          primaryColor: Colors.green,
+          elevatedButtonTheme: ElevatedButtonThemeData(style:  ElevatedButton.styleFrom(backgroundColor: Colors.green, foregroundColor: Colors.green)),
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.green,
+        ),
+      ),
     );
   }
 }
@@ -112,7 +155,6 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            Expanded(child: SignIn())
           ],
         ),
       ),
