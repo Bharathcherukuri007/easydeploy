@@ -23,13 +23,13 @@ final GoRouter _router = GoRouter(
       },
       routes: <RouteBase>[
         GoRoute(
-          path: 'details',
+          path: '/details',
           builder: (BuildContext context, GoRouterState state) {
             return const MyHomePage(title: "text",);
           },
         ),
         GoRoute(
-          path: 'home',
+          path: '/home',
           builder: (BuildContext context, GoRouterState state) {
             return Home(code: state.queryParams["code"] ?? "",);
           },
