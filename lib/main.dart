@@ -42,6 +42,7 @@ final GoRouter _router = GoRouter(
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
   setPathUrlStrategy();
+  Router.withConfig(config: _router);
   runApp(const MyApp());
 }
 
