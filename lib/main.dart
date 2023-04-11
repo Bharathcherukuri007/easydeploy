@@ -10,7 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/subjects.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'dart:async';
+import 'dart:io';
 
 
 
@@ -32,9 +35,30 @@ Future<void> main() async{
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final navigatorKey = GlobalObjectKey("Route");
+
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, (() {
+      GlobalErrors().globalErrorStream.listen((event) {
+        BuildContext? con = GlobalObjectKey("Route").currentContext;
+        if(con != null){
+        }
+
+      });
+      
+    }));
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -44,6 +68,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         routerConfig: _router,
+        key: navigatorKey,
         title: 'Flutter Demo',
         darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -152,4 +177,28 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+
+class GlobalErrors {
+
+  late StreamController<Exception> globalExceptions;
+
+  static final GlobalErrors _singleton = new GlobalErrors._internal();
+  
+  GlobalErrors._internal() {
+    globalExceptions = StreamController<Exception>.broadcast();
+  }
+
+  void throwException(Exception e, ) {
+    globalExceptions.sink.add(e);
+    
+  }
+
+  Stream<Exception> get globalErrorStream => globalExceptions.stream;
+
+  factory GlobalErrors() {
+    return _singleton;
+  }
+
 }

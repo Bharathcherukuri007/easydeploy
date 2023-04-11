@@ -25,6 +25,7 @@ class _AddProjectState extends State<AddProject> {
     githubBloc ??= Provider.of<GithubBloc>(context);
     return Scaffold(
       body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
@@ -129,7 +130,7 @@ class _RepoState extends State<Repo> {
                         child: Container(
                           height: 40,
                           width: 40,
-                          child: Image.network(githubBloc!.currentUser.profileUrl!),
+                          child: Image.network(githubBloc!.currentUser!.profileUrl!),
                         ),
                         
                       ),
@@ -206,7 +207,7 @@ class _BranchState extends State<Branch> {
                         child: Container(
                           height: 40,
                           width: 40,
-                          child: Image.network(githubBloc!.currentUser.profileUrl!),
+                          child: Image.network(githubBloc!.currentUser!.profileUrl!),
                         ),
                         
                       ),

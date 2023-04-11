@@ -3,6 +3,7 @@ import 'package:easydeploy/providers/github_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class Details extends StatefulWidget {
@@ -192,18 +193,21 @@ class _DetailsState extends State<Details> {
                               project.path = _path.text +"/";
                             }
                             githubBloc!.newProject.add(project);
-                            var res = await githubBloc!.addWebHook(githubBloc!.currentUser.userName!, project.repoName!);
+                            var res = await githubBloc!.addWebHook(githubBloc!.currentUser!.userName!, project.repoName!);
                             if(!res){
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("WebHook Failed")));
                               return;
                             }
-                            var response = await githubBloc!.deploySite(project, githubBloc!.currentUser);
+                            var response = await githubBloc!.deploySite(project, githubBloc!.currentUser!);
                             if(response){
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Success")));
                             }
                             else{
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed")));
                             }
+                            var p = githubBloc!.newProject.value;
+                            githubBloc!.addProject(p);
+                            GoRouter.of(context).push("/");
 
                             
                         } 

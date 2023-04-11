@@ -1,4 +1,5 @@
 import 'package:easydeploy/home.dart';
+import 'package:easydeploy/models/project.dart';
 import 'package:easydeploy/models/user.dart';
 import 'package:easydeploy/providers/github_bloc.dart';
 import 'package:easydeploy/signin.dart';
@@ -11,7 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/link.dart';
 
 class Header extends StatefulWidget {
-  const Header({super.key});
+  bool includeBackButton;
+  Header({super.key, this.includeBackButton = true});
 
   @override
   State<Header> createState() => _HeaderState();
@@ -36,10 +38,9 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     githubBloc ??= Provider.of<GithubBloc>(context);
 
-    return StreamBuilder<User>(
+    return StreamBuilder<User?>(
       stream: githubBloc!.userStream,
       builder: ((context, snapshot) {
-        githubBloc!.getProjects();
         if(snapshot.data == null || snapshot.data!.userName == null || snapshot.data!.profileUrl == null){
           return PreferredSize(child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -57,10 +58,16 @@ class _HeaderState extends State<Header> {
             ],
           ), preferredSize: Size(double.infinity, 300));
         }
+        if(snapshot.data != null || snapshot.data!.userName != null || snapshot.data!.profileUrl != null)
+          githubBloc!.getProjects();
         return PreferredSize(child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              widget.includeBackButton ? IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+                Navigator.pop(context);
+              },) : SizedBox(),
               Text(snapshot.data!.userName!, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.green),),
+              Expanded(child: Container()),
               Row(
                 children: [
                   ClipOval(
@@ -76,6 +83,8 @@ class _HeaderState extends State<Header> {
                 itemBuilder: ((context) {
                   return [PopupMenuItem(child: Text("LogOut"), onTap: () async{
                     var prefs = await SharedPreferences.getInstance();
+                    githubBloc!.addUser(User());
+                    githubBloc!.addProject(Project());
                     prefs.clear();
                   },),];
                 
