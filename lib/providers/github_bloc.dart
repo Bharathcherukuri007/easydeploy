@@ -8,7 +8,7 @@ import 'package:easydeploy/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GithubBloc{
-  final _project = BehaviorSubject<List<Project>>();
+  final _project = BehaviorSubject<List<Project>?>();
   final _user = BehaviorSubject<User>();
   final ServiceLayer serviceLayer = ServiceLayer();
   final repos = BehaviorSubject<List<String>>();
@@ -25,8 +25,8 @@ class GithubBloc{
 
 
   void addProject(Project project){
-    currentProjects.add(project);
-    _project.add(currentProjects);
+    currentProjects!.add(project);
+    _project.add(currentProjects!);
   }
 
   void addUser(User user){
@@ -42,8 +42,18 @@ class GithubBloc{
   }
 
   void getProjects() async{
-    var res = await serviceLayer.getProjects();
-    _project.add(res);
+    try{
+
+      var res = await serviceLayer.getProjects();
+      _project.add(res);
+    }
+    catch(e){
+      prefs = await SharedPreferences.getInstance();
+      _user.add(User());
+      _project.add(null);
+      prefs!.clear();
+
+    }
   }
 
 
@@ -76,8 +86,8 @@ class GithubBloc{
   }
 
 
-  List<Project> get currentProjects => _project.value;
-  User get currentUser =>_user.value;
+  List<Project>? get currentProjects => _project.valueOrNull;
+  User? get currentUser =>_user.valueOrNull;
  
 
 

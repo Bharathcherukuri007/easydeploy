@@ -17,8 +17,8 @@ class Project{
     siteName = json["site_name"];
     frameWork = json["framework"];
     version = json["version"];
-    conclusion = json["conclusion"];
-    status = json["status"];
+    conclusion = json["conclusion"] ?? "";
+    status = json["status"] ?? "";
     path = json["path"] ?? "";
     email = json["email"] ?? "";
   }

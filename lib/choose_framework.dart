@@ -28,19 +28,24 @@ class _ChooseFrameworkState extends State<ChooseFramework> {
           stream: githubBloc!.newProject.stream,
           builder: (context, snapshot) {
             return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(margin: const EdgeInsets.symmetric(horizontal: 20), child: Header(),),
                 Text("Choose Framework", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: Colors.green)),
+                Expanded(child: Container()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Card(title: "Flutter", path: "assets/flutter.png", onTap: () {
+                    FrameworkCard(
+                      toshow: githubBloc!.newProject.value.frameWork != null && githubBloc!.newProject.value.frameWork == "flutter",
+                      title: "Flutter", path: "assets/flutter.png", onTap: () {
                       var res = githubBloc!.newProject.value;
                       res.frameWork = "flutter";
                       githubBloc!.newProject.add(res);
                     },),
-                    Card(title: "React", path: "assets/react.png", onTap: () {
+                    FrameworkCard(
+                      toshow: githubBloc!.newProject.value.frameWork != null && githubBloc!.newProject.value.frameWork == "react",
+                      title: "React", path: "assets/react.png", onTap: () {
                       var res = githubBloc!.newProject.value;
                       res.frameWork = "react";
                       githubBloc!.newProject.add(res);
@@ -76,34 +81,40 @@ class _ChooseFrameworkState extends State<ChooseFramework> {
   }
 }
 
-class Card extends StatelessWidget {
+class FrameworkCard extends StatelessWidget {
   String title;
   String path;
+  double? height;
+  double? width;
+  bool toshow ;
   VoidCallback? onTap;
-  Card({super.key , required this.title, required this.path, this.onTap});
+  FrameworkCard({super.key , required this.title, required this.path, this.onTap, this.height, this.width, this.toshow = false});
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      fit: FlexFit.loose,
-      child: InkWell(
-        onTap: onTap != null ? onTap! : null ,
-        child: Container(
-          height: 500,
-          width: 500,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(path, height: 300, width: 300,),
-              Text(title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),)
-            ],
+    return InkWell(
+      onTap: onTap != null ? onTap! : null ,
+      child: Stack(
+        children: [
+          Container(
+            height: height ?? 500,
+            width:  width ?? 500,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(path, height: 300, width: 300,),
+                Text(title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),)
+              ],
+            ),
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(20)
+            ),
+            
           ),
-          decoration: BoxDecoration(
-            color: Colors.green,
-            borderRadius: BorderRadius.circular(20)
-          ),
-          
-        ),
+          if(toshow)
+            Positioned(top: 10, right: 10,  child: ClipOval(child: Container(padding: EdgeInsets.all(10), color: Colors.blue, child: Icon(Icons.check),))),
+        ],
       ),
     );
   }

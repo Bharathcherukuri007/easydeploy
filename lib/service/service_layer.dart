@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:easydeploy/main.dart';
 import 'package:easydeploy/models/project.dart';
 import 'package:easydeploy/models/user.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,11 @@ class ServiceLayer{
       }
       return projects;
     } 
+    else{
+      print("hello");
+      p!.clear();
+      throw Exception();
+    }
     return [];
   }
 
